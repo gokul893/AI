@@ -119,10 +119,7 @@ if __name__ == '__main__':
 		elif "open facebook" in query:
 			webbrowser.open("www.facebook.com")
 
-		elif "send message" in query:
-			kit.sendwhatmsg("+917338886235","this is testing protocol",2,25)
-
-		elif"play songs on youtube" in query:
+		elif "play songs on youtube" in query:
 			kit.playonyt("Kaarkuzhal Kadavaiye")
 
 		elif 'open youtube' in query:
@@ -281,7 +278,7 @@ if __name__ == '__main__':
 			speak("Recycle Bin Recycled")
 
 		elif "don't listen" in query or "stop listening" in query:
-			speak("for how much time you want to stop jarvis from listening commands")
+			speak("for how much time you want to stop mayuri from listening commands")
 			a = int(takeCommand())
 			time.sleep(a)
 			print(a)
@@ -294,7 +291,7 @@ if __name__ == '__main__':
 			webbrowser.open("https://www.google.nl / maps / place/" + location + "")
 
 		elif "camera" in query or "take a photo" in query:
-			ec.capture(0, "Jarvis Camera ", "img.jpg")
+			ec.capture(0, "Mayuri Camera ", "img.jpg")
 
 		elif "restart" in query:
 			subprocess.call(["shutdown", "/r"])
@@ -324,7 +321,7 @@ if __name__ == '__main__':
 		
 		elif "show note" in query:
 			speak("Showing Notes")
-			file = open("jarvis.txt", "r")
+			file = open("mayuri.txt", "r")
 			print(file.read())
 			speak(file.read(6))
 
