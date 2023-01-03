@@ -1,12 +1,8 @@
 from re import L
-import subprocess
 from sunau import AUDIO_FILE_ENCODING_ADPCM_G721
 from winreg import QueryInfoKey, QueryReflectionKey
 import wolframalpha
 import pyttsx3
-import tkinter
-import json
-import random
 import operator
 import speech_recognition as sr
 import datetime
@@ -15,21 +11,14 @@ import webbrowser
 import os
 import winshell
 import pyjokes
-import feedparser
-import smtplib
 import ctypes
 import time
-import requests
 import shutil
-import cv2
-from twilio.rest import Client
-from clint.textui import progress
 from ecapture import ecapture as ec
-from bs4 import BeautifulSoup
-import win32com.client as wincl
 from urllib.request import urlopen
 from requests import get
 import pywhatkit as kit
+import calendar
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -39,64 +28,49 @@ def speak(audio):
 	engine.say(audio)
 	engine.runAndWait()
 
+
 def wishMe():
 	hour = int(datetime.datetime.now().hour)
 	if hour>= 0 and hour<12:
 		speak("Good Morning Sir !")
-
 	elif hour>= 12 and hour<18:
 		speak("Good Afternoon Sir !")
-
 	else:
 		speak("Good Evening Sir !")
-
-	assname =("Mayuri 1point0")
+	assname = ("Voice Assisant")
 	speak("I am your Assistant")
 	speak(assname)
-	
+
+
 def username():
 	speak("What should i call you sir")
 	uname = takeCommand()
 	speak("Welcome Mister")
 	speak(uname)
 	columns = shutil.get_terminal_size().columns
-	
 	print("Welcome Mr.", uname)
-	
 	speak("How can i Help you, Sir")
 
+	
 def takeCommand():
-	
 	r = sr.Recognizer()
-	
 	with sr.Microphone() as source:
-		
 		print("Listening...")
 		r.pause_threshold = 1
 		audio = r.listen(source)
-
 	try:
 		print("Recognizing...")
 		query = r.recognize_google(audio, language ='en-in')
 		print(f"User said: {query}\n")
-
 	except Exception as e:
 		print(e)
 		print("Unable to Recognize your voice.")
 		return "None"
 	return query
 
-def sendEmail(to,content):
-	server = smtplib.SMTP('smtp.gmail.com',587)
-	server.ehlo()
-	server.starttls()
-	server.login('your email id','your password')
-	server.sendmail('your email id',to,content)
-	server.close()
 
 if __name__ == '__main__':
 	clear = lambda: os.system('cls')
-	
 	clear()
 	wishMe()
 	username()
@@ -113,13 +87,11 @@ if __name__ == '__main__':
 			print(results)
 			speak(results)
 
-		elif "how are you" in query:
-			speak("I'm fine , glad you me that")
 
 		elif "open facebook" in query:
 			webbrowser.open("www.facebook.com")
 
-		elif "play songs on youtube" in query:
+		elif"play songs on youtube" in query:
 			kit.playonyt("Kaarkuzhal Kadavaiye")
 
 		elif 'open youtube' in query:
@@ -131,7 +103,7 @@ if __name__ == '__main__':
 			cm =takeCommand().lower()
 			webbrowser.open(f"{cm}")
 
-		elif 'open stackoverflow' in query:
+		elif 'open stackoverflow' in query or 'overflow' in query:
 			speak("Here you go to Stack Over flow.Happy coding")
 			webbrowser.open("stackoverflow.com")
 
@@ -154,7 +126,7 @@ if __name__ == '__main__':
 			speak("I am fine, Thank you")
 			speak("How are you, Sir")
 
-		elif 'fine' in query or "good" in query:
+		elif 'fine' in query:
 			speak("It's good to know that your fine")
 
 		elif "what's your name" in query or "What is your name" in query:
@@ -189,25 +161,25 @@ if __name__ == '__main__':
 			speak(f"your IP address is {ip}")
 	
 		elif "calculate" in query:
-			r=sr.Recognizer()
+			r = sr.Recognizer()
 			with sr.Microphone() as source:
-				speak("Say what you want to calculate,example: 3 plus 3")
-				print("Listening.....")
+				speak("Say what you want to calculate ")
+				print("Listening....")
 				r.adjust_for_ambient_noise(source)
-				audio=r.listen(source)
+				audio = r.listen(source)
 			my_string=r.recognize_google(audio)
 			print(my_string)
 			def get_operator_fn(op):
 				return {
 					'+' : operator.add, #plus
 					'-' : operator.sub, #minus
-					'*' : operator.mul, #multiplied by
-					'divided' : operator.add, #divided
-					}[op]
-			def eval_binary_expr(op1,oper,op2):  #5 plus 8
-				op1,op2=int(op1),int(op2)
+					'x' : operator.mul, #multiplied
+					'divided by' : operator.__truediv__, #divided
+				}[op]
+			def eval_binary_expr(op1,oper,op2):
+				op1,op2 = int(op1), int(op2)
 				return get_operator_fn(oper)(op1,op2)
-			speak("your result is")
+			speak("Your result is")
 			speak(eval_binary_expr(*(my_string.split())))
 
 		elif 'search' in query or 'play' in query:
@@ -219,30 +191,13 @@ if __name__ == '__main__':
 			speak("If you talk then definitely your human.")
 
 		elif "why you came to world" in query:
-			speak("Thanks to Gokul Raj. further It's a secret")
-
-		elif 'resume' in query:
-			speak("opening Resume")
-			power = r"C:\\Users\\Gokul raj\\OneDrive\\Documents"
-			os.startfile(power)
-
-		elif "email to friend" in query:
-			try:
-				speak("what should I say?")
-				content =takeCommand().lower()
-				to = "gokulrajnithyanandhan127@gmail.com"
-				sendEmail(to,content)
-				speak("Email has been sent to hari")
-
-			except Exception as e:
-				print(e)
-				speak("Sorry sir, I am not able to sent this file")
+			speak("Thanks to the creater. further It's a secret")
 
 		elif 'is love' in query:
 			speak("It is 7th sense that destroy all other senses")
 
 		elif "who are you" in query:
-			speak("I am your virtual assistant created by Gokul raj")
+			speak("I am your virtual assistant created by Gokul Raj")
 
 		elif 'reason for you' in query:
 			speak("I was created as a Minor project by Mister Gokul Raj ")
@@ -265,14 +220,6 @@ if __name__ == '__main__':
 			speak("locking the device")
 			ctypes.windll.user32.LockWorkStation()
 
-		elif 'shutdown system' in query:
-			speak("Hold On a Sec ! Your system is on its way to shut down")
-			subprocess.call('shutdown / p /f')
-
-		elif "Good Morning" in query:
-			speak("A warm" +query)
-			speak("How are you Mister")
-					
 		elif 'empty recycle bin' in query:
 			winshell.recycle_bin().empty(confirm = False, show_progress = False, sound = True)
 			speak("Recycle Bin Recycled")
@@ -283,28 +230,9 @@ if __name__ == '__main__':
 			time.sleep(a)
 			print(a)
 
-		elif "where is" in query:
-			query = query.replace("where is", "")
-			location = query
-			speak("User asked to Locate")
-			speak(location)
-			webbrowser.open("https://www.google.nl / maps / place/" + location + "")
-
 		elif "camera" in query or "take a photo" in query:
-			ec.capture(0, "Mayuri Camera ", "img.jpg")
-
-		elif "restart" in query:
-			subprocess.call(["shutdown", "/r"])
+			ec.capture(0, "Voice Assisant Camera ", "img.jpg")
 			
-		elif "hibernate" in query or "sleep" in query:
-			speak("Hibernating")
-			subprocess.call("shutdown / h")
-
-		elif "log off" in query or "sign out" in query:
-			speak("Make sure all the application are closed before sign-out")
-			time.sleep(5)
-			subprocess.call(["shutdown", "/l"])
-
 		elif "write a note" in query:
 			speak("What should i write, sir")
 			note = takeCommand()
@@ -321,8 +249,10 @@ if __name__ == '__main__':
 		
 		elif "show note" in query:
 			speak("Showing Notes")
-			file = open("mayuri.txt", "r")
+			file = open("jarvis.txt","r")
 			print(file.read())
 			speak(file.read(6))
 
-		speak("Sir,do you have any other work")
+		elif "open Notepad " in query:
+			npath = "C:\\Windows\\notepad.exe"
+			os.startfile(npath)
